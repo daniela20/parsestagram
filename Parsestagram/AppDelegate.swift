@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Parse
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -16,6 +17,39 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
+        Parse.initializeWithConfiguration(
+            ParseClientConfiguration(block: { (configuration:ParseMutableClientConfiguration) -> Void in
+                configuration.applicationId = "parsestagram"
+                configuration.clientKey = "062197070495"  // set to nil assuming you have not set clientKey
+                configuration.server = "https://calm-stream-66336.herokuapp.com/parse"
+            })
+        )
+        
+        self.window = UIWindow(frame: UIScreen.mainScreen().bounds)
+        let storyBoard = UIStoryboard(name: "Main", bundle: nil)
+        
+        let postViewController = storyBoard.instantiateViewControllerWithIdentifier("PostViewController")
+        let feedViewController = storyBoard.instantiateViewControllerWithIdentifier("FeedViewController")
+        let userViewController = storyBoard.instantiateViewControllerWithIdentifier("UserViewController")
+        
+        // Set up the Tab Bar Controller to have two tabs
+        let tabBarController = UITabBarController()
+        tabBarController.viewControllers = [feedViewController, postViewController, userViewController]
+        
+        let viewController : UIViewController?
+        
+        if PFUser.currentUser() != nil {
+            print("logged in as \(PFUser.currentUser()!.username)")
+            viewController = tabBarController
+        } else {
+            print("not logged in")
+            viewController = storyBoard.instantiateViewControllerWithIdentifier("Login")
+        }
+        
+        self.window?.rootViewController = viewController
+        self.window?.makeKeyAndVisible()
+        
+        
         return true
     }
 
