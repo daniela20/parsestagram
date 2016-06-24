@@ -38,7 +38,6 @@ class UserViewController: UIViewController, UITableViewDataSource, UITableViewDe
     }
     
     func loadMoreData() {
-        print("loading more data")
         queryPosts()
         limit += 10
         self.isMoreDataLoading = false
@@ -99,14 +98,10 @@ class UserViewController: UIViewController, UITableViewDataSource, UITableViewDe
         query.limit = limit
         query.findObjectsInBackgroundWithBlock { (objects: [PFObject]?, error: NSError?) -> Void in
             if error == nil {
-                print("Successfully got posts")
-                
                 if let objects = objects {
                     self.posts = objects
                     self.userFeedView.reloadData()
                 }
-            } else {
-                print("Error")
             }
         }
     }

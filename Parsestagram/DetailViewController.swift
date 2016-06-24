@@ -30,11 +30,10 @@ class DetailViewController: UIViewController {
             }
         }
         
-        if let time = post["timeStamp"] as? String {
-            self.timeStampLabel.text = time
-        } else {
-            self.timeStampLabel.text = "time stamp"
-        }
+        let dateFormatter = NSDateFormatter()
+        dateFormatter.dateFormat = "MM-dd-yyyy hh:mm"
+        let dateString = dateFormatter.stringFromDate(post.createdAt!)
+        timeStampLabel.text = dateString
        
         if let user = post["author"] as? PFUser {
             self.usernameLabel.text = user.username
@@ -51,6 +50,7 @@ class DetailViewController: UIViewController {
     @IBAction func logout(sender: AnyObject) {
         PFUser.logOutInBackgroundWithBlock { (error: NSError?) in
             self.performSegueWithIdentifier("logoutSegue4", sender: nil)
+            self.performSegueWithIdentifier("logoutSegue5", sender: nil)
         }
     }
     

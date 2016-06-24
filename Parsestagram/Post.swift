@@ -11,24 +11,16 @@ import Parse
 
 class Post: NSObject {
     
-    //var dateFormatter : NSDateFormatter = NSDateFormatter()
-    
     class func postUserImage(image: UIImage?, withCaption caption: String?, withCompletion completion: PFBooleanResultBlock?) {
         // Create Parse object PFObject
         let post = PFObject(className: "Post")
         
         // Add relevant fields to the object
-        post["media"] = getPFFileFromImage(image) // PFFile column type
+        post["media"] = Post.getPFFileFromImage(image) // PFFile column type
         post["author"] = PFUser.currentUser() // Pointer column type that points to PFUser
         post["caption"] = caption
         post["likesCount"] = 0
         post["commentsCount"] = 0
-        let date = NSDate()
-        let dateFormatter = NSDateFormatter()
-        print(date)
-        let time = dateFormatter.stringFromDate(date)
-        print(time)
-        post["timeStamp"] = time
         
         // Save object (following function will save the object in Parse asynchronously)
         post.saveInBackgroundWithBlock(completion)

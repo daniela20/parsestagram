@@ -10,7 +10,7 @@ import UIKit
 import Parse
 
 class PostViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
-    
+
     @IBOutlet weak var imagePost: UIImageView!
     @IBOutlet weak var captionField: UITextField!
     

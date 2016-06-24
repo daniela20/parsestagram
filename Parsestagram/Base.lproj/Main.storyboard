@@ -407,7 +407,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="timeStamp" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Y7n-MJ-y0V">
-                                <rect key="frame" x="290" y="78" width="72" height="21"/>
+                                <rect key="frame" x="194" y="78" width="168" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -522,7 +522,7 @@
             </objects>
             <point key="canvasLocation" x="2682.5" y="2398.5"/>
         </scene>
-        <!--Detail View Controller-->
+        <!--Details-->
         <scene sceneID="uRs-om-dqK">
             <objects>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ABt-NE-iyi" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -532,11 +532,11 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="ZF4-qT-kFr">
-                                <rect key="frame" x="0.0" y="105" width="375" height="375"/>
+                                <rect key="frame" x="0.0" y="111" width="375" height="375"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="usernameLabel" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Bla-Z7-sCr">
-                                <rect key="frame" x="11" y="72" width="135" height="21"/>
+                                <rect key="frame" x="11" y="78" width="135" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -550,7 +550,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="timeStamp" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="VIN-38-ccI">
-                                <rect key="frame" x="290" y="72" width="72" height="21"/>
+                                <rect key="frame" x="171" y="78" width="191" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -559,7 +559,7 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
-                    <navigationItem key="navigationItem" id="c33-xv-cmY">
+                    <navigationItem key="navigationItem" title="Details" id="c33-xv-cmY">
                         <barButtonItem key="rightBarButtonItem" style="plain" id="jtN-bh-OW7">
                             <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="HUu-or-bZh">
                                 <rect key="frame" x="276" y="7" width="83" height="30"/>
@@ -567,6 +567,7 @@
                                 <state key="normal" title="Log Out"/>
                                 <connections>
                                     <action selector="logout:" destination="L8h-cn-WeP" eventType="touchUpInside" id="v4Q-CJ-4Vg"/>
+                                    <segue destination="BYZ-38-t0r" kind="modal" identifier="logoutSegue5" id="eYd-bx-2gU"/>
                                 </connections>
                             </button>
                         </barButtonItem>
@@ -580,7 +581,7 @@
                     </connections>
                 </viewController>
             </objects>
-            <point key="canvasLocation" x="3746" y="2396"/>
+            <point key="canvasLocation" x="3745.5" y="2395.5"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="x4E-x2-DHg">
@@ -607,6 +608,6 @@
         <image name="user" width="24" height="24"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="lpF-n7-1gk"/>
+        <segue reference="eYd-bx-2gU"/>
     </inferredMetricsTieBreakers>
 </document>
