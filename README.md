@@ -42,9 +42,12 @@ Please list two areas of the assignment you'd like to **discuss further with you
 
 ## Video Walkthrough
 
-Here's a walkthrough of implemented user stories: (Too long to render a gif so it's a video at the link)
+Here's a walkthrough of implemented user stories: 
 
-<a href="http://imgur.com/3AzrXh9"><img src="http://imgur.com/3AzrXh9.gif" title="source: imgur.com" /></a>
+<a href="http://imgur.com/xHurWD3"><img src="http://imgur.com/xHurWD3.gif" title="source: imgur.com" /></a>
+<a href="http://imgur.com/6V1R6ng"><img src="http://imgur.com/6V1R6ng.gif" title="source: imgur.com" /></a>
+<a href="http://imgur.com/Cv1maBc"><img src="http://imgur.com/Cv1maBc.gif" title="source: imgur.com" /></a>
+<a href="http://i.imgur.com/KQHpDpq"><img src="http://imgur.com/KQHpDpq.gif" title="source: imgur.com" /></a>
 
 GIF created with [LiceCap](http://www.cockos.com/licecap/).
 
