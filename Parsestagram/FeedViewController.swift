@@ -16,13 +16,9 @@ class FeedViewController: UIViewController, UITableViewDataSource, UITableViewDe
     var posts : [PFObject]!
     var isMoreDataLoading = false
     var limit : Int = 20
-
+    
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if let posts = posts {
-            return posts.count
-        } else {
-            return 0
-        }
+        return 1
     }
     
     func scrollViewDidScroll(scrollView: UIScrollView) {
@@ -46,7 +42,7 @@ class FeedViewController: UIViewController, UITableViewDataSource, UITableViewDe
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = feedView.dequeueReusableCellWithIdentifier("postCell", forIndexPath: indexPath) as! PostCell
-        let post = posts[indexPath.row]
+        let post = posts[indexPath.section]
         cell.captionLabel.text = post["caption"] as? String
         let imageFile = post["media"] as! PFFile
         imageFile.getDataInBackgroundWithBlock { (imageData: NSData?, error: NSError?) -> Void in
@@ -65,6 +61,9 @@ class FeedViewController: UIViewController, UITableViewDataSource, UITableViewDe
         super.viewDidLoad()
         feedView.dataSource = self
         feedView.delegate = self
+        
+        feedView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "HeaderCell")
+        feedView.registerClass(UITableViewHeaderFooterView.self, forHeaderFooterViewReuseIdentifier: "HeaderCell")
         
         NSTimer.scheduledTimerWithTimeInterval(0.5, target: self, selector: #selector(FeedViewController.onTimer), userInfo: nil, repeats: true)
         self.queryPosts()
@@ -103,22 +102,49 @@ class FeedViewController: UIViewController, UITableViewDataSource, UITableViewDe
         }
     }
     
+    func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let headerView = UIView(frame: CGRect(x: 0, y: 0, width: 320, height: 50))
+        headerView.backgroundColor = UIColor(white: 1, alpha: 0.9)
+        
+        let profileView = UIImageView(frame: CGRect(x: 10, y: 10, width: 30, height: 30))
+        profileView.clipsToBounds = true
+        profileView.layer.cornerRadius = 15;
+        profileView.layer.borderColor = UIColor(white: 0.7, alpha: 0.8).CGColor
+        profileView.layer.borderWidth = 1;
+        let profileImage = UIImage(named:"profile-placeholder")!
+        profileView.image = profileImage
+        headerView.addSubview(profileView)
+        
+        let userLabel = UILabel(frame: CGRectMake(50, 0, 320, 50))
+        userLabel.font = UIFont.boldSystemFontOfSize(17.0)
+        let post = posts[section]
+        if let user = post["author"] as? PFUser {
+            userLabel.text = user.username
+        }
+        headerView.addSubview(userLabel)
+        
+        let timeLabel = UILabel(frame: CGRectMake(230, 0, 130, 50))
+        timeLabel.font = UIFont.systemFontOfSize(14.0)
+        let dateFormatter = NSDateFormatter()
+        dateFormatter.dateFormat = "MM-dd-yyyy hh:mm"
+        let dateString = dateFormatter.stringFromDate(post.createdAt!)
+        timeLabel.text = dateString
+        timeLabel.textAlignment = NSTextAlignment.Right
+        headerView.addSubview(timeLabel)
 
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        if(segue.identifier == "detailSegue"){
-            let cell = sender as! UITableViewCell
-            let indexPath = feedView.indexPathForCell(cell)
-            let post = posts[indexPath!.row]
-            
-            let detailViewController = segue.destinationViewController as! DetailViewController
-            detailViewController.post = post
+        return headerView
+    }
+    
+    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+        if let posts = posts {
+            return posts.count
+        } else {
+            return 0
         }
     }
     
-    @IBAction func logout(sender: AnyObject) {
-        PFUser.logOutInBackgroundWithBlock { (error: NSError?) in
-            self.performSegueWithIdentifier("logoutSegue2", sender: nil)
-        }
+    func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 50
     }
 
 }

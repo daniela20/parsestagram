@@ -9,15 +9,17 @@
 import UIKit
 import Parse
 
-class UserViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UIScrollViewDelegate {
+class UserViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UIScrollViewDelegate {
+    @IBOutlet weak var usernameLabel: UILabel!
     
-    @IBOutlet weak var userFeedView: UITableView!
+    @IBOutlet weak var profilePic: UIImageView!
+    @IBOutlet weak var userFeedView: UICollectionView!
     
     var posts : [PFObject]!
     var isMoreDataLoading = false
-    var limit : Int = 20
+    //var limit : Int = 20
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if let posts = posts {
             return posts.count
         } else {
@@ -25,29 +27,30 @@ class UserViewController: UIViewController, UITableViewDataSource, UITableViewDe
         }
     }
     
-    func scrollViewDidScroll(scrollView: UIScrollView) {
-        if (!isMoreDataLoading) {
-            let scrollViewContentHeight = userFeedView.contentSize.height
-            let scrollOffsetThreshold = scrollViewContentHeight - userFeedView.bounds.size.height
-            
-            if(scrollView.contentOffset.y > scrollOffsetThreshold && userFeedView.dragging) {
-                isMoreDataLoading = true
-                loadMoreData()
-            }
-        }
-    }
+    /*func scrollViewDidScroll(scrollView: UIScrollView) {
+     if (!isMoreDataLoading) {
+     let scrollViewContentHeight = userFeedView.contentSize.height
+     let scrollOffsetThreshold = scrollViewContentHeight - userFeedView.bounds.size.height
+     
+     if(scrollView.contentOffset.y > scrollOffsetThreshold && userFeedView.dragging) {
+     isMoreDataLoading = true
+     loadMoreData()
+     }
+     }
+     }*/
     
     func loadMoreData() {
+        print("loading more data")
         queryPosts()
-        limit += 10
+        //limit += 10
         self.isMoreDataLoading = false
         self.userFeedView.reloadData()
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = userFeedView.dequeueReusableCellWithIdentifier("postCell", forIndexPath: indexPath) as! PostCell
+    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
+        let cell = userFeedView.dequeueReusableCellWithReuseIdentifier("UserFeedCell", forIndexPath: indexPath) as! UserFeedCell
         let post = posts[indexPath.row]
-        cell.captionLabel.text = post["caption"] as? String
+        //cell.captionLabel.text = post["caption"] as? String
         let imageFile = post["media"] as! PFFile
         imageFile.getDataInBackgroundWithBlock { (imageData: NSData?, error: NSError?) -> Void in
             if error == nil {
@@ -65,8 +68,15 @@ class UserViewController: UIViewController, UITableViewDataSource, UITableViewDe
         super.viewDidLoad()
         userFeedView.dataSource = self
         userFeedView.delegate = self
+        self.usernameLabel.text = PFUser.currentUser()!.username
+        profilePic.layer.cornerRadius = profilePic.frame.size.height/2;
+        profilePic.layer.masksToBounds = true;
+        //profilePic.layer.borderColor = CGColor.grayColor()
+        profilePic.layer.borderWidth = 2.0;
+        profilePic.layer.borderColor = UIColor(white: 0.7, alpha: 0.8).CGColor
+        profilePic.layer.borderWidth = 1;
+        userFeedView.alwaysBounceVertical = true
         
-        NSTimer.scheduledTimerWithTimeInterval(0.5, target: self, selector: #selector(FeedViewController.onTimer), userInfo: nil, repeats: true)
         self.queryPosts()
         let refreshControl = UIRefreshControl()
         refreshControl.addTarget(self, action: #selector(refreshControlAction(_:)), forControlEvents: UIControlEvents.ValueChanged)
@@ -95,26 +105,30 @@ class UserViewController: UIViewController, UITableViewDataSource, UITableViewDe
         }
         
         query.addDescendingOrder("createdAt")
-        query.limit = limit
+        //query.limit = limit
         query.findObjectsInBackgroundWithBlock { (objects: [PFObject]?, error: NSError?) -> Void in
             if error == nil {
+                print("Successfully got posts")
+                
                 if let objects = objects {
                     self.posts = objects
                     self.userFeedView.reloadData()
                 }
+            } else {
+                print("Error")
             }
         }
     }
     
     @IBAction func logout(sender: AnyObject) {
         PFUser.logOutInBackgroundWithBlock { (error: NSError?) in
-                self.performSegueWithIdentifier("logoutSegue", sender: nil)
-        }
+            self.performSegueWithIdentifier("logoutSegue", sender: nil)
+            }
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if(segue.identifier == "detailSegue2"){
-            let cell = sender as! UITableViewCell
+            let cell = sender as! UICollectionViewCell
             let indexPath = userFeedView.indexPathForCell(cell)
             let post = posts[indexPath!.row]
             

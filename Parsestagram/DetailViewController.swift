@@ -12,10 +12,9 @@ import Parse
 class DetailViewController: UIViewController {
     
     var post : PFObject!
+    @IBOutlet var detailView: UIView!
     
-    @IBOutlet weak var usernameLabel: UILabel!
     @IBOutlet weak var photo: UIImageView!
-    @IBOutlet weak var timeStampLabel: UILabel!
     @IBOutlet weak var captionLabel: UILabel!
     
     override func viewDidLoad() {
@@ -30,14 +29,40 @@ class DetailViewController: UIViewController {
             }
         }
         
+        /*let dateFormatter = NSDateFormatter()
+        dateFormatter.dateFormat = "MM-dd-yyyy hh:mm"
+        let dateString = dateFormatter.stringFromDate(post.createdAt!)
+        timeStampLabel.text = dateString*/
+       
+        /*if let user = post["author"] as? PFUser {
+            self.usernameLabel.text = user.username
+        }*/
+        
+        let profileView = UIImageView(frame: CGRect(x: 10, y: 74, width: 30, height: 30))
+        profileView.clipsToBounds = true
+        profileView.layer.cornerRadius = 15;
+        profileView.layer.borderColor = UIColor(white: 0.7, alpha: 0.8).CGColor
+        profileView.layer.borderWidth = 1;
+        let profileImage = UIImage(named:"profile-placeholder")!
+        profileView.image = profileImage
+        detailView.addSubview(profileView)
+        
+        let userLabel = UILabel(frame: CGRectMake(50, 64, 320, 50))
+        userLabel.font = UIFont.boldSystemFontOfSize(17.0)
+        //let post = posts[section]
+        if let user = post["author"] as? PFUser {
+            userLabel.text = user.username
+        }
+        detailView.addSubview(userLabel)
+        
+        let timeLabel = UILabel(frame: CGRectMake(230, 64, 130, 50))
+        timeLabel.font = UIFont.systemFontOfSize(14.0)
         let dateFormatter = NSDateFormatter()
         dateFormatter.dateFormat = "MM-dd-yyyy hh:mm"
         let dateString = dateFormatter.stringFromDate(post.createdAt!)
-        timeStampLabel.text = dateString
-       
-        if let user = post["author"] as? PFUser {
-            self.usernameLabel.text = user.username
-        }
+        timeLabel.text = dateString
+        timeLabel.textAlignment = NSTextAlignment.Right
+        detailView.addSubview(timeLabel)
 
         // Do any additional setup after loading the view.
     }
@@ -46,15 +71,6 @@ class DetailViewController: UIViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
-    @IBAction func logout(sender: AnyObject) {
-        PFUser.logOutInBackgroundWithBlock { (error: NSError?) in
-            self.performSegueWithIdentifier("logoutSegue4", sender: nil)
-            self.performSegueWithIdentifier("logoutSegue5", sender: nil)
-        }
-    }
-    
-    
 
     /*
     // MARK: - Navigation

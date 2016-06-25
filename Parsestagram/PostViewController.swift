@@ -27,7 +27,7 @@ class PostViewController: UIViewController, UIImagePickerControllerDelegate, UIN
     
     func imagePickerController(picker: UIImagePickerController,
                                didFinishPickingMediaWithInfo info: [String : AnyObject]) {
-        let size = CGSize(width: 375, height: 375)
+        let size = CGSize(width: 400, height: 400)
         // Get the image captured by the UIImagePickerController
         let originalImage = info[UIImagePickerControllerOriginalImage] as! UIImage
         if let editedImage = info[UIImagePickerControllerEditedImage] as? UIImage {
@@ -66,12 +66,6 @@ class PostViewController: UIViewController, UIImagePickerControllerDelegate, UIN
             Post.postUserImage(imagePost.image, withCaption: captionField.text, withCompletion: nil)
             imagePost.image = nil
             captionField.text = ""
-        }
-    }
-    
-    @IBAction func logout(sender: AnyObject) {
-        PFUser.logOutInBackgroundWithBlock { (error: NSError?) in
-            self.performSegueWithIdentifier("logoutSegue3", sender: nil)
         }
     }
     
